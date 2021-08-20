@@ -1,5 +1,5 @@
 {
-  "name": "nodebb-plugin-image-sizer",
+  "name": "nodebb-plugin-image-md-size",
   "version": "0.9.0",
   "description": "NodeBB plugin which allows you to change the size of a markdown image in a post using the @ character.",
   "main": "library.js",

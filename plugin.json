@@ -1,5 +1,5 @@
 {
-    "id": "nodebb-plugin-image-sizer",
+    "id": "nodebb-plugin-image-md-size",
     "url": "nodebb-plugin-image-md-size",
     "library": "./library.js",
     "hooks": [
