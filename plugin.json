@@ -1,0 +1,9 @@
+{
+    "id": "nodebb-plugin-image-sizer",
+    "url": "nodebb-plugin-image-md-size",
+    "library": "./library.js",
+    "hooks": [
+        {"hook": "filter:parse.post", "method": "sizeImages"},
+        {"hook": "filter:parse.raw", "method": "sizeImagesInComposerPreview", "priority":6}
+    ]
+}

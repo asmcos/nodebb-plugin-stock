@@ -1,0 +1,50 @@
+{
+  "name": "nodebb-plugin-image-sizer",
+  "version": "0.9.0",
+  "description": "NodeBB plugin which allows you to change the size of a markdown image in a post using the @ character.",
+  "main": "library.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MilWolf/nodebb-plugin-image-md-size"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "image",
+    "size",
+    "markdown"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "author": {
+    "name": "MilWolf",
+    "email": "julienhtbe@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MilWolf/nodebb-plugin-image-md-size/issues"
+  },
+  "readmeFilename": "README.md",
+  "nbbpm": {
+    "compatibility": ">=0.6.0 <=1.18.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "13.1.0",
+    "@commitlint/config-angular": "13.1.0",
+    "eslint": "7.32.0",
+    "eslint-config-nodebb": "0.0.1",
+    "eslint-plugin-import": "2.24.1",
+    "husky": "7.0.1",
+    "lint-staged": "11.1.2"
+  }
+}
