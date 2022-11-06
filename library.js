@@ -11,7 +11,7 @@ function getUrlString(match, code) {
 
 function replaceContent(data) {
 
-    codeRegex = /(sh|sz|sh.|sz.)[0-9]{6}/g;
+    codeRegex = /((sh|sz|sh.|sz.)[0-9]{6})/g;
 
     var newData = data;
 
