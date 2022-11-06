@@ -6,7 +6,7 @@ function getUrlString(match, code) {
         return match;
     }
     code1 = code.replace(".","")
-    return "<a  href=https://klang.org.cn/kline.html?code=" + code +">"+code+"</a>";
+    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +">"+code+"</a>";
 }
 
 function replaceContent(data) {
