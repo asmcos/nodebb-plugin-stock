@@ -1,9 +1,9 @@
 {
-    "id": "nodebb-plugin-image-md-size",
-    "url": "nodebb-plugin-image-md-size",
+    "id": "nodebb-plugin-stock",
+    "url": "nodebb-plugin-stock",
     "library": "./library.js",
     "hooks": [
-        {"hook": "filter:parse.post", "method": "sizeImages"},
-        {"hook": "filter:parse.raw", "method": "sizeImagesInComposerPreview", "priority":6}
+        {"hook": "filter:parse.post", "method": "stockurl"},
+        {"hook": "filter:parse.raw", "method": "stockurlPreview", "priority":6}
     ]
 }

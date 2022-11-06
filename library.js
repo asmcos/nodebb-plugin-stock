@@ -1,44 +1,28 @@
-function getSetString(match, src, width, height) {
 
-    if (width === "" && height === "") {
+function getUrlString(match, code) {
 
-        return match;
-    }
-
-    return "<img src=\"" + src + "\" width=\"" + width + "\" height=\"" + height + "\"" + " style=\"height:" + height + "px;\"";
-}
-
-function getPercentString(match, src, percent) {
-    return "<img src=\"" + src + "\" width=\"" + percent + "%\"" + " height=\"" + 'auto' + "\"";
-}
-
-function getWidthString(match, src, width) {
-
-    if (width === "") {
+    if (code === "") {
 
         return match;
     }
 
-    return "<img src=\"" + src + "\" width=\"" + width + "\" height=\"" + 'auto' + "\"";
+    return "<a  href=https://klang.org.cn/kline.html?code=" + code +">"+code+"</a>";
 }
 
 function replaceContent(data) {
 
-    percentRegex = /<img src="([^@]*)@([0-9]+)%(25)?"/g;
-    absoluteRegex = /<img src="([^@]*)@([0-9]*)x([0-9]*)"/g;
-    multiplyRegex = /<img src="([^@]*)@([0-9]*\.?[0-9]*)"/g;
+    codeRegex = /(sh|sz|sh.|sz.)[0-9]{6}/g;
+
     var newData = data;
 
-    newData = newData.replace(percentRegex, getPercentString);
-    newData = newData.replace(multiplyRegex, getWidthString);
-    newData = newData.replace(absoluteRegex, getSetString);
+    newData = newData.replace(codeRegex, getUrlString);
 
     return newData;
 }
 
-var ImageSizer = {
+var StockCode = {
 
-    sizeImages: function(data, callback) {
+    stockurl: function(data, callback) {
 
         if (data && data.postData && data.postData.content) {
 
@@ -49,7 +33,7 @@ var ImageSizer = {
         callback(null, data);
     },
 
-    sizeImagesInComposerPreview: function(data, callback) {
+    stockurlPreview: function(data, callback) {
 
         if (data) {
 
@@ -60,4 +44,4 @@ var ImageSizer = {
     }
 };
 
-module.exports = ImageSizer;
+module.exports = StockCode;

@@ -1,11 +1,11 @@
 {
-  "name": "nodebb-plugin-image-md-size",
+  "name": "nodebb-plugin-stock",
   "version": "0.9.0",
-  "description": "NodeBB plugin which allows you to change the size of a markdown image in a post using the @ character.",
+  "description": "NodeBB plugin which allows parse stock code",
   "main": "library.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MilWolf/nodebb-plugin-image-md-size"
+    "url": "https://github.com/asmcos/nodebb-plugin-stock"
   },
   "keywords": [
     "nodebb",
@@ -32,7 +32,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MilWolf/nodebb-plugin-image-md-size/issues"
+    "url": "https://github.com/asmcos/nodebb-plugin-stock/issues"
   },
   "readmeFilename": "README.md",
   "nbbpm": {
