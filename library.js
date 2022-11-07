@@ -2,6 +2,31 @@
 const async = require('async');
 const axios = require('axios');
 
+
+function parsedatas(datas){
+
+            var name = datas[0]
+            var close1 = datas[2]
+            var close = datas[3]
+
+
+            //开盘前价格为零
+            if (close == 0){
+                close = close1
+            } 
+
+            var rise = 100 * (close - close1) / close1
+            if (String(parseFloat(rise)) != "NaN"){ //NaN 是无法直接比较的
+                rise = parseFloat(rise).toFixed(2)
+            } else {
+                rise = 0.000
+            }
+            close = parseFloat(close).toFixed(2)
+
+            console.log(name,close,rise)
+            return [name,close,rise]
+}
+
 async function getstockinfo(code){
         
         apihost = "https://api.klang.org.cn/"
@@ -21,19 +46,22 @@ async function getstockinfo(code){
             rets.push(parsedatas(line.split(',')))
         }
         console.log(rets)
-        return rets
+        //rets[0][0] = name
+        return rets[0][1]
 }
 
-function getPriceString(match, code) {
+async function getPriceString(match, code) {
 
     if (code === "") {
 
         return match;
     }
     code1 = code.replace(".","")
-
-    console.log(rets)
-    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"</a>";
+    price = await getstockinfo(code1)
+    console.log(price)
+    d = new Date()
+    d = d.toLocaleDateString()
+    return "code" + "[时间:"+ d +",价格:"+price+"]";
 }
 
 
