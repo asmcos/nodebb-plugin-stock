@@ -105,15 +105,11 @@ async function replaceContent(data,getString,callback) {
 
 var StockCode = {
 
-    stockedit: function(data,callback){
+    getPosts: function(data,callback){
        
-       if (data && data.data && data.data.content) {
-
-            replaceContent(data.data.content,getPriceString,function(newcontent){
-                console.log(newcontent)
-                data.data.content = newcontent
-                callback(null, data);
-            });
+       if (data) {
+            console.log(data)
+            callback(null, data);
         } else {
             callback(null, data);
         }
