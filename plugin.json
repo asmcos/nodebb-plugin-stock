@@ -4,7 +4,6 @@
     "library": "./library.js",
     "hooks": [
         {"hook": "filter:post.create", "method": "stockprice"},
-        {"hook": "filter:post.edit", "method": "stockedit"},
         {"hook": "filter:parse.post", "method": "stockurl"},
         {"hook": "filter:parse.raw", "method": "stockurlPreview", "priority":6}
     ]
