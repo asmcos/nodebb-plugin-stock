@@ -3,6 +3,7 @@
     "url": "nodebb-plugin-stock",
     "library": "./library.js",
     "hooks": [
+        {"hook": "filter:postcreate", "method": "stockprice"},
         {"hook": "filter:parse.post", "method": "stockurl"},
         {"hook": "filter:parse.raw", "method": "stockurlPreview", "priority":6}
     ]

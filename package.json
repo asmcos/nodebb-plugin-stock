@@ -38,6 +38,9 @@
   "nbbpm": {
     "compatibility": ">=0.6.0 <=1.18.0"
   },
+  "dependencies": {
+    "axios":""
+    },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
     "@commitlint/config-angular": "13.1.0",
