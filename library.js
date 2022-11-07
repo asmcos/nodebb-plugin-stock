@@ -105,7 +105,7 @@ async function replaceContent(data,getString,callback) {
 
 var StockCode = {
 
-    stockprice: function(data,callback){
+    stockedit: function(data,callback){
        
        if (data && data.data && data.data.content) {
 
@@ -118,6 +118,21 @@ var StockCode = {
             callback(null, data);
         }
     },
+   stockprice: function(data,callback){
+
+       if (data && data.post && data.post.content) {
+
+            replaceContent(data.post.content,getPriceString,function(newcontent){
+                console.log(newcontent)
+                data.post.content = newcontent
+                data.data.content = newcontent
+                callback(null, data);
+            });
+        } else {
+            callback(null, data);
+        }
+    },
+
 
     stockurl: function(data, callback) {
 
