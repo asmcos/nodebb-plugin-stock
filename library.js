@@ -87,7 +87,7 @@ async function getUrlString(match, code) {
     code1 = code.replace(".","")
     price = await getstockinfo(code1)
 
-    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"["+price+"]"</a>";
+    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"["+price+"]</a>";
 }
 
 async function replaceContent(data,getString,callback) {
@@ -137,7 +137,6 @@ var StockCode = {
     },
 
     stockurlPreview: function(data, callback) {
-
         if (data) {
 
             replaceContent(data,getUrlString,function(newdata){
