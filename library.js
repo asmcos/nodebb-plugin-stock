@@ -2,6 +2,16 @@
 const async = require('async');
 const axios = require('axios');
 
+async function replaceAsync(str, regex, asyncFn) {
+    const promises = [];
+    str.replace(regex, (match, ...args) => {
+        const promise = asyncFn(match, ...args);
+        promises.push(promise);
+    });
+    const data = await Promise.all(promises);
+    return str.replace(regex, () => data.shift());
+}
+
 
 function parsedatas(datas){
 
@@ -84,7 +94,8 @@ async function replaceContent(data,getString,callback) {
 
     var newData = data;
 
-    newData = await newData.replace(codeRegex, getString);
+    //newData = await newData.replace(codeRegex, getString);
+    newData = await replaceAsync(newData, codeRegex, geString);
 
     callback(newData)
 
