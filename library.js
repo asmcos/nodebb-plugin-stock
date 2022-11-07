@@ -48,14 +48,14 @@ async function getstockinfo(code){
         line = lines[0].split('"')[1]
         if (line =='FAILED'){
             alert('股票代码错误，请重新输入')
-            return [[0,0,0]]
+            //return [[0,0,0]]
+            return 0
         }
         
         for (i=0;i<lines.length-1;i++){
             line = lines[i].split('"')[1]
             rets.push(parsedatas(line.split(',')))
         }
-        console.log(rets)
         //rets[0][0] = name
         return rets[0][1]
 }
@@ -68,10 +68,11 @@ async function getPriceString(match, code) {
     }
     code1 = code.replace(".","")
     price = await getstockinfo(code1)
-    console.log(price)
+    if (price == 0) return code
+
     d = new Date()
     d = d.toLocaleDateString()
-    return "code" + "[时间:"+ d +",价格:"+price+"]";
+    return code + "[时间:"+ d +",价格:"+price+"]";
 }
 
 
@@ -94,8 +95,7 @@ async function replaceContent(data,getString,callback) {
 
     var newData = data;
 
-    //newData = await newData.replace(codeRegex, getString);
-    newData = await replaceAsync(newData, codeRegex, geString);
+    newData = await replaceAsync(newData, codeRegex, getString);
 
     callback(newData)
 
@@ -108,6 +108,7 @@ var StockCode = {
        if (data && data.postData && data.postData.content) {
 
             replaceContent(data.postData.content,getPriceString,function(newcontent){
+                console.log(newcontent)
                 data.postData.content = newcontent
                 callback(null, data);
             });
