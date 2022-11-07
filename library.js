@@ -33,7 +33,6 @@ function parsedatas(datas){
             }
             close = parseFloat(close).toFixed(2)
 
-            console.log(name,close,rise)
             return [name,close,rise]
 }
 
@@ -57,6 +56,8 @@ async function getstockinfo(code){
             rets.push(parsedatas(line.split(',')))
         }
         //rets[0][0] = name
+
+        console.log(rets[0][1])
         return rets[0][1]
 }
 
@@ -84,9 +85,9 @@ async function getUrlString(match, code) {
         return match;
     }
     code1 = code.replace(".","")
-    await getstockinfo(code1)
+    price = await getstockinfo(code1)
 
-    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"</a>";
+    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"["+price+"]"</a>";
 }
 
 async function replaceContent(data,getString,callback) {
