@@ -78,52 +78,63 @@ async function getUrlString(match, code) {
     return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"</a>";
 }
 
-function replaceContent(data,getString) {
+async function replaceContent(data,getString,callback) {
 
     codeRegex = /((sh|sz|sh.|sz.)[0-9]{6})/g;
 
     var newData = data;
 
-    newData = newData.replace(codeRegex, getString);
+    newData = await newData.replace(codeRegex, getString);
 
-    return newData;
+    callback(newData)
+
 }
-
-
 
 
 var StockCode = {
 
-    stockprice:function(data,callback){
+    stockprice: function(data,callback){
        if (data && data.postData && data.postData.content) {
 
-            data.postData.content = replaceContent(data.postData.content,getPriceString);
+            replaceContent(data.postData.content,getPriceString,function(newcontent){
+                data.postData.content = newcontent
+                callback(null, data);
+            });
+        } else {
+            callback(null, data);
         }
-
-
-        callback(null, data);
-
     },
 
     stockurl: function(data, callback) {
 
         if (data && data.postData && data.postData.content) {
 
-            data.postData.content = replaceContent(data.postData.content,getUrlString);
+            replaceContent(data.postData.content,getUrlString,function(newcontent){
+                data.postData.content = newcontent
+                callback(null, data);
+                
+            });
+        } else{
+
+            callback(null, data);
+
         }
 
 
-        callback(null, data);
     },
 
     stockurlPreview: function(data, callback) {
 
         if (data) {
 
-            data = replaceContent(data,getUrlString);
+            replaceContent(data,getUrlString,function(newdata){
+                callback(null, newdata);
+            });
+        }else{
+            
+            callback(null, data);
         }
 
-        callback(null, data);
     }
 };
 
