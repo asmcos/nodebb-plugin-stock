@@ -1,6 +1,6 @@
 
 const async = require('async');
-const axios = require('axios').default;
+const axios = require('axios');
 
 async function getstockinfo(code){
         
