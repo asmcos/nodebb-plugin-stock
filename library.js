@@ -20,7 +20,9 @@ async function getstockinfo(code){
             line = lines[i].split('"')[1]
             rets.push(parsedatas(line.split(',')))
         }
-        return }
+        console.log(rets)
+        return rets
+}
 
 function getPriceString(match, code) {
 
@@ -30,19 +32,21 @@ function getPriceString(match, code) {
     }
     code1 = code.replace(".","")
 
-    
+    console.log(rets)
     return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"</a>";
 }
 
 
 
-function getUrlString(match, code) {
+async function getUrlString(match, code) {
 
     if (code === "") {
 
         return match;
     }
     code1 = code.replace(".","")
+    await getstockinfo(code1)
+
     return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"</a>";
 }
 
