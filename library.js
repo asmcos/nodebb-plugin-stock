@@ -106,11 +106,12 @@ async function replaceContent(data,getString,callback) {
 var StockCode = {
 
     stockprice: function(data,callback){
-       if (data && data.postData && data.postData.content) {
+       
+       if (data && data.data && data.data.content) {
 
-            replaceContent(data.postData.content,getPriceString,function(newcontent){
+            replaceContent(data.data.content,getPriceString,function(newcontent){
                 console.log(newcontent)
-                data.postData.content = newcontent
+                data.data.content = newcontent
                 callback(null, data);
             });
         } else {
