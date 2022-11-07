@@ -101,6 +101,15 @@ async function replaceContent(data,getString,callback) {
     callback(newData)
 
 }
+async function replacePosts(posts,getString,callback) {
+
+    codeRegex = /((sh|sz|sh.|sz.)[0-9]{6})/g;
+
+    for (int i = 0 ;i < posts.length;i++){
+        posts[i].content = await replaceAsync(posts[i].content, codeRegex, getString);
+    }
+    callback(posts)
+}
 
 
 var StockCode = {
@@ -132,10 +141,11 @@ var StockCode = {
 
     stockurl: function(data, callback) {
 
-        if (data && data.postData && data.postData.content) {
+        //if (data && data.postData && data.postData.content) {
+        if (data && data.posts && data.postData.content) {
 
-            replaceContent(data.postData.content,getUrlString,function(newcontent){
-                data.postData.content = newcontent
+            replacePosts(data.posts,getUrlString,function(newposts){
+                data.posts = newposts
                 callback(null, data);
                 
             });

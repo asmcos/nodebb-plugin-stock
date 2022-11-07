@@ -4,8 +4,7 @@
     "library": "./library.js",
     "hooks": [
         {"hook": "filter:post.create", "method": "stockprice"},
-        {"hook": "filter:topic.getPosts", "method": "getPosts"},
-        {"hook": "filter:parse.post", "method": "stockurl"},
+        {"hook": "filter:topics.addPostData", "method": "stockurl"},
         {"hook": "filter:parse.raw", "method": "stockurlPreview", "priority":6}
     ]
 }
