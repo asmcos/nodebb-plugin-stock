@@ -48,7 +48,7 @@ async function getstockinfo(code){
         if (line =='FAILED'){
             alert('股票代码错误，请重新输入')
             //return [[0,0,0]]
-            return 0
+            return [0,0]
         }
         
         for (i=0;i<lines.length-1;i++){
@@ -58,7 +58,7 @@ async function getstockinfo(code){
         //rets[0][0] = name
 
         console.log(rets[0][1])
-        return rets[0][1]
+        return rets[0]
 }
 
 async function getPriceString(match, code) {
@@ -68,7 +68,9 @@ async function getPriceString(match, code) {
         return match;
     }
     code1 = code.replace(".","")
-    price = await getstockinfo(code1)
+    rets = await getstockinfo(code1)
+    price = rets[1]
+    rise  = rets[2]
     if (price == 0) return code
 
     d = new Date()
@@ -85,9 +87,11 @@ async function getUrlString(match, code) {
         return match;
     }
     code1 = code.replace(".","")
-    price = await getstockinfo(code1)
+    rets = await getstockinfo(code1)
+    price = rets[1]
+    rise  = rets[2]
 
-    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"["+price+"]</a>";
+    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"["+price+":"+rise+"]</a>";
 }
 
 async function replaceContent(data,getString,callback) {
