@@ -67,7 +67,7 @@ async function getPriceString(match, code) {
 
         return match;
     }
-    code1 = code.replace(".","")
+    let code1 = code.replace(".","")
     rets = await getstockinfo(code1)
     price = rets[1]
     rise  = rets[2]
@@ -86,7 +86,7 @@ async function getUrlString(match, code) {
 
         return match;
     }
-    code1 = code.replace(".","")
+    let code1 = code.replace(".","")
     rets = await getstockinfo(code1)
     price = rets[1]
     rise  = rets[2]
