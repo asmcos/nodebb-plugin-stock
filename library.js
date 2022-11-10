@@ -93,10 +93,10 @@ async function getUrlString(match, code) {
     if (rise == 0){
         template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+"]</a>";
     } else if (rise >0){
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=red>"+rise+"</font>]</a>";
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#ff0000> + "+rise+"</font>]</a>";
     } else{
 
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=green>"+rise+"</font>]</a>";
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#00ff00>"+rise+"</font>]</a>";
     }
     return template 
 }
