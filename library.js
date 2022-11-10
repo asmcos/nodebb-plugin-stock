@@ -90,8 +90,15 @@ async function getUrlString(match, code) {
     rets = await getstockinfo(code1)
     price = rets[1]
     rise  = rets[2]
+    if (rise == 0){
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+"]</a>";
+    } else if (rise >0){
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=red>"+rise+"</font>]</a>";
+    } else{
 
-    return "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"["+price+":"+rise+"]</a>";
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=green>"+rise+"</font>]</a>";
+    }
+    return template 
 }
 
 async function replaceContent(data,getString,callback) {
