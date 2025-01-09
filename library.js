@@ -12,6 +12,22 @@ async function replaceAsync(str, regex, asyncFn) {
     return str.replace(regex, () => data.shift());
 }
 
+async function replaceAsync_list(str, regex, asyncFn) {
+    const promises = [];
+    let list = []
+    str.replace(regex, (match, ...args) => {
+        list.push(match)
+    })
+    let allprice = await getstockinfo_list(list.join(','))
+
+    str.replace(regex, (match, ...args) => {
+        const promise = asyncFn(allprice,match, ...args);
+        promises.push(promise);
+    });
+    const data = await Promise.all(promises);
+    return str.replace(regex, () => data.shift());
+}
+
 
 function parsedatas(datas){
 
@@ -34,6 +50,27 @@ function parsedatas(datas){
             close = parseFloat(close).toFixed(2)
 
             return [name,close,rise]
+}
+
+async function getstockinfo_list(code){
+
+        let apihost = "https://api.klang.org.cn/"
+        let response = await axios.get(apihost+"?list="+code)
+
+        const regex =  /var hq_str_(\w+)="([^,]+?),([^,]+),([^,]+),([^,]+),/g;
+
+        // 存储结果
+        const result = {};
+
+        // 匹配并提取
+        let match;
+        while ((match = regex.exec(response.data)) !== null) {
+            const variableName = match[1];
+            const value = parsedatas(match.slice(2,6));
+            result[variableName] = value;
+        }
+
+        return result;
 }
 
 async function getstockinfo(code){
@@ -61,7 +98,7 @@ async function getstockinfo(code){
         return rets[0]
 }
 
-async function getPriceString(match, code) {
+async function getPriceString(allprice,match, code) {
 
     if (code === "") {
 
@@ -78,8 +115,6 @@ async function getPriceString(match, code) {
     return code + "[时间:"+ d +",价格:"+price+"]";
 }
 
-
-
 async function getUrlString(match, code) {
 
     if (code === "") {
@@ -88,6 +123,28 @@ async function getUrlString(match, code) {
     }
     let code1 = code.replace(".","")
     rets = await getstockinfo(code1)
+    price = rets[1]
+    rise  = rets[2]
+    if (rise == 0){
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+" ]</a>";
+    } else if (rise >0){
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#ff0000> +"+rise+"</font> ]</a>";
+    } else{
+
+        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#00ff00>"+rise+"</font> ]</a>";
+    }
+    return template 
+}
+
+
+async function getUrlString_list(allprice,match, code) {
+
+    if (code === "") {
+
+        return match;
+    }
+    let code1 = code.replace(".","")
+    rets = allprice[code1]
     price = rets[1]
     rise  = rets[2]
     if (rise == 0){
@@ -112,6 +169,20 @@ async function replaceContent(data,getString,callback) {
     callback(newData)
 
 }
+
+async function replaceContent_list(data,getString,callback) {
+
+    codeRegex = /((sh|sz|sh.|sz.)[0-9]{6})/g;
+
+    var newData = data;
+
+    newData = await replaceAsync_list(newData, codeRegex, getString);
+
+    callback(newData)
+
+}
+
+
 async function replacePosts(posts,getString,callback) {
 
     codeRegex = /((sh|sz|sh.|sz.)[0-9]{6})/g;
@@ -172,7 +243,7 @@ var StockCode = {
     stockurlPreview: function(data, callback) {
         if (data) {
 
-            replaceContent(data,getUrlString,function(newdata){
+            replaceContent_list(data,getUrlString_list,function(newdata){
                 callback(null, newdata);
             });
         }else{
