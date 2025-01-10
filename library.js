@@ -188,7 +188,7 @@ async function replacePosts(posts,getString,callback) {
     codeRegex = /((sh|sz|sh.|sz.)[0-9]{6})/g;
     var i = 0;
     for (i = 0 ;i < posts.length;i++){
-        posts[i].content = await replaceAsync(posts[i].content, codeRegex, getString);
+        posts[i].content = await replaceAsync_list(posts[i].content, codeRegex, getString);
     }
     callback(posts)
 }
@@ -206,7 +206,6 @@ var StockCode = {
         }
     },
    stockprice: function(data,callback){
-
        if (data && data.post && data.post.content) {
 
             replaceContent(data.post.content,getPriceString,function(newcontent){
@@ -226,7 +225,7 @@ var StockCode = {
         //if (data && data.postData && data.postData.content) {
         if (data && data.posts ) {
 
-            replacePosts(data.posts,getUrlString,function(newposts){
+            replacePosts(data.posts,getUrlString_list,function(newposts){
                 data.posts = newposts
                 callback(null, data);
                 
