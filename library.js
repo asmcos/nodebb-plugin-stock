@@ -18,8 +18,9 @@ async function replaceAsync_list(str, regex, asyncFn) {
     str.replace(regex, (match, ...args) => {
         list.push(match)
     })
+    let allprice = {}
     if (list.length > 0){
-        let allprice = await getstockinfo_list(list.join(','))
+        allprice = await getstockinfo_list(list.join(','))
     }
     str.replace(regex, (match, ...args) => {
         const promise = asyncFn(allprice,match, ...args);
