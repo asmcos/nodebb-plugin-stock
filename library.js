@@ -100,7 +100,7 @@ async function getstockinfo(code){
         return rets[0]
 }
 
-async function getPriceString(allprice,match, code) {
+async function getPriceString(match, code) {
 
     if (code === "") {
 
@@ -108,6 +108,7 @@ async function getPriceString(allprice,match, code) {
     }
     let code1 = code.replace(".","")
     rets = await getstockinfo(code1)
+    console.log(rets)
     price = rets[1]
     rise  = rets[2]
     if (price == 0) return code
