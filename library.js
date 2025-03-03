@@ -1,6 +1,8 @@
 
 const async = require('async');
 const axios = require('axios');
+const winston = require('winston');
+winston.info('This is a log message.');
 
 async function replaceAsync(str, regex, asyncFn) {
     const promises = [];
@@ -56,22 +58,16 @@ function parsedatas(datas){
 
 async function getstockinfo_list(code){
 
-        let apihost = "https://api.klang.org.cn/"
-        let response = await axios.get(apihost+"?list="+code)
+        let apihost = "https://api.klang.org.cn/v2"
+        let response = await axios.get(apihost+"/list/"+code)
 
-        const regex =  /var hq_str_(\w+)="([^,]+?),([^,]+),([^,]+),([^,]+),/g;
 
         // 存储结果
         const result = {};
 
-        // 匹配并提取
-        let match;
-        while ((match = regex.exec(response.data)) !== null) {
-            const variableName = match[1];
-            const value = parsedatas(match.slice(2,6));
-            result[variableName] = value;
-        }
-
+	response.data.forEach(function(item){
+		result[item[0]] = [item[1],item[2],item[3]]
+	})
         return result;
 }
 
@@ -96,7 +92,6 @@ async function getstockinfo(code){
         }
         //rets[0][0] = name
 
-        console.log(rets[0][1])
         return rets[0]
 }
 
