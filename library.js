@@ -76,6 +76,14 @@ async function getstockinfo(code){
         apihost = "https://api.klang.org.cn/"
         response = await axios.get(apihost+"?list="+code)
         datas = response.data
+	console.log(datas)
+	try {
+		return [datas[0][1],datas[0][2],datas[0][3]]
+	} catch (e) {
+		console.log(code,response.data)
+		return ["",0,0]
+	}
+	//
         lines = datas.split(';')
         var rets = []
 
