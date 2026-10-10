@@ -24,12 +24,16 @@ async function replaceAsync_list(str, regex, asyncFn) {
     if (list.length > 0){
         allprice = await getstockinfo_list(list.join(','))
     }
-    str.replace(regex, (match, ...args) => {
-        const promise = asyncFn(allprice,match, ...args);
-        promises.push(promise);
-    });
-    const data = await Promise.all(promises);
-    return str.replace(regex, () => data.shift());
+    try {
+    	str.replace(regex, (match, ...args) => {
+        	const promise = asyncFn(allprice,match, ...args);
+        	promises.push(promise);
+    	});
+   	 const data = await Promise.all(promises);
+    	return str.replace(regex, () => data.shift());
+    } catch {
+	return str 
+    }
 }
 
 
@@ -132,12 +136,12 @@ async function getUrlString(match, code) {
     price = rets[1]
     rise  = rets[2]
     if (rise == 0){
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+" ]</a>";
+        template = "<a  href=https://klang.hk.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+" ]</a>";
     } else if (rise >0){
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#ff0000> +"+rise+"</font> ]</a>";
+        template = "<a  href=https://klang.hk.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#ff0000> +"+rise+"</font> ]</a>";
     } else{
 
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#00ff00>"+rise+"</font> ]</a>";
+        template = "<a  href=https://klang.hk.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#00ff00>"+rise+"</font> ]</a>";
     }
     return template 
 }
@@ -154,12 +158,12 @@ async function getUrlString_list(allprice,match, code) {
     price = rets[1]
     rise  = rets[2]
     if (rise == 0){
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+" ]</a>";
+        template = "<a  href=https://klang.hk.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":"+rise+" ]</a>";
     } else if (rise >0){
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#ff0000> +"+rise+"</font> ]</a>";
+        template = "<a  href=https://klang.hk.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#ff0000> +"+rise+"</font> ]</a>";
     } else{
 
-        template = "<a  href=https://klang.org.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#00ff00>"+rise+"</font> ]</a>";
+        template = "<a  href=https://klang.hk.cn/kline.html?code=" + code1 +" target=_blank>"+code+"[ "+price+":<font color=#00ff00>"+rise+"</font> ]</a>";
     }
     return template 
 }
