@@ -55,7 +55,7 @@
 	<div class="tw-mt-7 tw-grid tw-items-start tw-gap-x-16 tw-gap-y-10 min-[900px]:tw-grid-cols-[minmax(0,1fr)_216px]">
 		<section aria-label="讨论">
 			{{{ if topics.length }}}
-			<h2 class="tw-text-[12px] tw-font-medium tw-tracking-wide tw-text-faint">新帖</h2>
+			<h2 class="tw-text-[12px] tw-font-medium tw-tracking-wide tw-text-faint">最新</h2>
 			{{{ each topics }}}
 			<article class="tw-flex tw-items-start tw-gap-3 tw-border-b tw-border-line tw-py-4">
 				{{{ if ./user.userslug }}}
@@ -101,7 +101,21 @@
 				</div>
 			</article>
 			{{{ end }}}
-			<a class="tw-mt-5 tw-inline-flex tw-text-[13px] tw-text-muted tw-no-underline hover:tw-text-ink" href="{relative_path}/recent">全部最新</a>
+			{{{ if recentPager.show }}}
+			<nav class="tw-mt-5 tw-flex tw-items-center tw-gap-4 tw-text-[13px]" aria-label="最新翻页">
+				{{{ if recentPager.prev }}}
+				<a class="tw-text-muted tw-no-underline hover:tw-text-ink" href="{recentPager.prevUrl}">上一页</a>
+				{{{ else }}}
+				<span class="tw-text-faint">上一页</span>
+				{{{ end }}}
+				<span class="tw-tabular-nums tw-text-faint">{recentPager.page} / {recentPager.pages}</span>
+				{{{ if recentPager.next }}}
+				<a class="tw-text-muted tw-no-underline hover:tw-text-ink" href="{recentPager.nextUrl}">下一页</a>
+				{{{ else }}}
+				<span class="tw-text-faint">下一页</span>
+				{{{ end }}}
+			</nav>
+			{{{ end }}}
 			{{{ end }}}
 
 			{{{ if square.length }}}
@@ -141,12 +155,29 @@
 						<span aria-hidden="true">·</span>
 						{{{ end }}}
 						<span class="tw-text-muted">{./voiceNames}</span>
+						<span aria-hidden="true">·</span>
+						<span title="{./timestampISO}">{./when}</span>
 					</div>
 					{{{ if ./teaser.text }}}
 					<p class="tw-mb-0 tw-mt-1.5 tw-line-clamp-2 tw-text-[13px] tw-leading-6 tw-text-body">{{{ if ./teaser.other }}}<span class="tw-font-medium tw-text-ink">{./teaser.name}</span><span class="tw-text-muted">：</span>{{{ end }}}{./teaser.text}</p>
 					{{{ end }}}
 				</div>
 			</article>
+			{{{ end }}}
+			{{{ if squarePager.show }}}
+			<nav class="tw-mt-5 tw-flex tw-items-center tw-gap-4 tw-text-[13px]" aria-label="聊得最开翻页">
+				{{{ if squarePager.prev }}}
+				<a class="tw-text-muted tw-no-underline hover:tw-text-ink" href="{squarePager.prevUrl}">上一页</a>
+				{{{ else }}}
+				<span class="tw-text-faint">上一页</span>
+				{{{ end }}}
+				<span class="tw-tabular-nums tw-text-faint">{squarePager.page} / {squarePager.pages}</span>
+				{{{ if squarePager.next }}}
+				<a class="tw-text-muted tw-no-underline hover:tw-text-ink" href="{squarePager.nextUrl}">下一页</a>
+				{{{ else }}}
+				<span class="tw-text-faint">下一页</span>
+				{{{ end }}}
+			</nav>
 			{{{ end }}}
 			{{{ end }}}
 

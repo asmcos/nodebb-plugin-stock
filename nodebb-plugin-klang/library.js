@@ -16,6 +16,8 @@ const plugin = module.exports;
 
 const INDICES = ['sh000001', 'sz399001', 'sz399006'];
 const SKIP_NAME = /^(Announcements|General Discussion|Comments & Feedback|Blogs|Uncategorized|未分类)$/i;
+const RECENT_SIZE = 10;
+const TALK_SIZE = 8;
 
 plugin.init = async function (params) {
 	if (params && params.router) {
@@ -119,24 +121,30 @@ plugin.renderHomepage = async function (hookData) {
 	const uid = req.uid;
 	const relative_path = nconf.get('relative_path') || '';
 	const { members, hues, presence } = await getMembers(uid);
-	const [cats, square, quotes, counts, me, canPost] = await Promise.all([
+	const recentPage = pageNumber(req.query && req.query.page);
+	const talkPage = pageNumber(req.query && req.query.talk);
+	const [cats, square, recent, quotes, counts, me, canPost] = await Promise.all([
 		getCategories(uid),
-		getSquare(uid, 8, hues),
+		getSquare(uid, talkPage, hues),
+		getRecent(uid, recentPage, hues),
 		getIndices(),
 		getCounts(),
 		getMe(uid, hues),
 		privileges.categories.canPostTopic(uid),
 	]);
-	const skip = new Set(square.map(topic => String(topic.tid)));
-	const recent = await getRecent(uid, 5, skip, hues);
+	if (recentPage !== recent.page || talkPage !== square.page) {
+		return res.redirect(homeHref(relative_path, recent.page, square.page));
+	}
 
 	res.render('klang-home', {
 		title: meta.config.homePageTitle || '主页',
 		breadcrumbs: undefined,
 		relative_path,
 		categories: cats,
-		square,
-		topics: recent,
+		square: square.topics,
+		squarePager: pagerFor(relative_path, 'talk', square, recent.page),
+		topics: recent.topics,
+		recentPager: pagerFor(relative_path, 'page', recent, square.page),
 		quotes,
 		quotesReady: quotes.some(q => q.price),
 		members,
@@ -178,41 +186,102 @@ async function getCategories(uid) {
 		});
 }
 
-async function getSquare(uid, count, hues) {
+async function getSquare(uid, page, hues) {
 	try {
-		const tids = await db.getSortedSetRevRange('topics:recent', 0, 249);
+		const tids = await db.getSortedSetRevRange('topics:posts', 0, -1);
 		if (!tids.length) {
-			return [];
+			return { topics: [], page: 1, pages: 1 };
 		}
-		const cards = await db.sortedSetsCard(tids.map(tid => `tid:${tid}:posters`));
-		const multi = [];
+		const [cards, postScores, recentScores] = await Promise.all([
+			db.sortedSetsCard(tids.map(tid => `tid:${tid}:posters`)),
+			db.sortedSetScores('topics:posts', tids),
+			db.sortedSetScores('topics:recent', tids),
+		]);
+		const ranked = [];
 		for (let i = 0; i < tids.length; i += 1) {
 			if (cards[i] > 1) {
-				multi.push(tids[i]);
-			}
-			if (multi.length >= count + 4) {
-				break;
+				ranked.push({
+					tid: tids[i],
+					posts: Number(postScores[i]) || 0,
+					when: Number(recentScores[i]) || 0,
+				});
 			}
 		}
-		const list = await topics.getTopics(multi, uid);
-		return (await shapeMany(list, hues, uid)).slice(0, count);
+		ranked.sort((a, b) => (b.posts - a.posts) || (b.when - a.when));
+		return pageTopics(uid, hues, ranked.map(row => row.tid), page, TALK_SIZE);
 	} catch (err) {
 		winston.warn(`[klang] square skipped: ${err.message}`);
-		return [];
+		return { topics: [], page: 1, pages: 1 };
 	}
 }
 
-async function getRecent(uid, count, skip, hues) {
-	const data = await topics.getSortedTopics({
-		uid,
-		start: 0,
-		stop: count + skip.size + 8,
-		sort: 'recent',
-		term: 'alltime',
-		filter: '',
+async function getRecent(uid, page, hues) {
+	try {
+		const tids = await db.getSortedSetRevRange('topics:recent', 0, -1);
+		return pageTopics(uid, hues, tids, page, RECENT_SIZE);
+	} catch (err) {
+		winston.warn(`[klang] recent skipped: ${err.message}`);
+		return { topics: [], page: 1, pages: 1 };
+	}
+}
+
+async function pageTopics(uid, hues, tids, page, size) {
+	const visible = await privileges.topics.filterTids('topics:read', tids, uid);
+	const pages = Math.max(1, Math.ceil(visible.length / size));
+	const safe = Math.min(Math.max(page, 1), pages);
+	const slice = visible.slice((safe - 1) * size, safe * size);
+	const list = await topics.getTopics(slice, uid);
+	const byId = {};
+	(list || []).forEach((topic) => {
+		if (topic && topic.tid) {
+			byId[String(topic.tid)] = topic;
+		}
 	});
-	const shaped = await shapeMany(data.topics || [], hues, uid);
-	return shaped.filter(topic => !skip.has(String(topic.tid))).slice(0, count);
+	const ordered = slice.map(tid => byId[String(tid)]).filter(Boolean);
+	return {
+		topics: await shapeMany(ordered, hues, uid),
+		page: safe,
+		pages,
+	};
+}
+
+function pageNumber(value) {
+	const n = parseInt(value, 10);
+	return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
+function homeHref(relative, page, talk) {
+	const params = new URLSearchParams();
+	if (page > 1) {
+		params.set('page', String(page));
+	}
+	if (talk > 1) {
+		params.set('talk', String(talk));
+	}
+	const query = params.toString();
+	return `${relative || ''}/${query ? `?${query}` : ''}`;
+}
+
+function pagerFor(relative, key, section, otherPage) {
+	const page = section.page;
+	const pages = section.pages;
+	if (pages <= 1) {
+		return { show: false };
+	}
+	const href = (nextPage) => {
+		const recent = key === 'page' ? nextPage : otherPage;
+		const talk = key === 'talk' ? nextPage : otherPage;
+		return homeHref(relative, recent, talk);
+	};
+	return {
+		show: true,
+		page,
+		pages,
+		prev: page > 1,
+		next: page < pages,
+		prevUrl: href(Math.max(1, page - 1)),
+		nextUrl: href(page + 1),
+	};
 }
 
 async function shapeMany(list, hues, uid) {
