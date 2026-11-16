@@ -72,7 +72,13 @@
 						{{{ if isAdmin }}}
 						<a class="tw-rounded-lg tw-px-3 tw-py-1.5 tw-text-sm tw-text-ink tw-no-underline hover:tw-bg-soft" href="{relative_path}/admin">管理后台</a>
 						{{{ end }}}
-						<a class="tw-rounded-lg tw-px-3 tw-py-1.5 tw-text-sm tw-text-ink tw-no-underline hover:tw-bg-soft" href="{relative_path}/logout">退出</a>
+						<div component="user/logout">
+							<form method="post" action="{relative_path}/logout">
+								<input type="hidden" name="_csrf" value="{config.csrf_token}">
+								<input type="hidden" name="noscript" value="true">
+								<button type="submit" class="tw-w-full tw-cursor-pointer tw-rounded-lg tw-border-0 tw-bg-transparent tw-px-3 tw-py-1.5 tw-text-left tw-text-sm tw-text-ink hover:tw-bg-soft">退出</button>
+							</form>
+						</div>
 					</div>
 				</details>
 				{{{ else }}}
