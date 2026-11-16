@@ -23,6 +23,13 @@ plugin.init = async function (params) {
 			res.set('Cache-Control', 'no-cache');
 			res.type('js').sendFile(path.join(__dirname, 'public/js/usercard.js'));
 		});
+		params.router.get('/logout', function (req, res, next) {
+			if (!req.loggedIn) {
+				return res.redirect(`${nconf.get('relative_path') || ''}/`);
+			}
+			res.locals.logoutRedirect = true;
+			params.controllers.authentication.logout(req, res).catch(next);
+		});
 	}
 	await installShellTemplates();
 	const title = await meta.configs.get('title');

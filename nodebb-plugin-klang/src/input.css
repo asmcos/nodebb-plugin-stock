@@ -116,6 +116,14 @@ summary::-webkit-details-marker { display: none; }
 	background: rgb(255 255 255 / 0.9);
 	backdrop-filter: saturate(140%) blur(12px);
 }
+/* 主题工具条是 sticky，层级在 1020。顶栏停在 30 时，姓名菜单会掉进工具条下面。 */
+body.klang-body #klangTopbar {
+	z-index: 1040 !important;
+	overflow: visible;
+}
+body.klang-body #klangTopbar > div {
+	overflow: visible;
+}
 :root.dark #klangTopbar {
 	background: rgb(9 9 11 / 0.88);
 }

@@ -8,7 +8,7 @@
 	<script>
 		var config = JSON.parse('{{configJSON}}');
 		var app = { user: JSON.parse('{{userJSON}}') };
-		document.documentElement.style.setProperty('--panel-offset', '0px');
+		document.documentElement.style.setProperty('--panel-offset', '52px');
 		(function () {
 			try {
 				var saved = localStorage.getItem('klang-theme');
@@ -26,6 +26,7 @@
 	{{{if useCustomCSS}}}
 	<style>{{customCSS}}</style>
 	{{{end}}}
+	<style>body.klang-body #klangTopbar{z-index:1040 !important;overflow:visible}body.klang-body #klangTopbar>div{overflow:visible}</style>
 </head>
 
 <body class="{bodyClass} skin-{{{if bootswatchSkin}}}{bootswatchSkin}{{{else}}}noskin{{{end}}} klang-body">
