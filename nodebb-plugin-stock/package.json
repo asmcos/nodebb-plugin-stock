@@ -1,0 +1,21 @@
+{
+  "name": "nodebb-plugin-stock",
+  "version": "1.0.0",
+  "description": "把帖子里的 A 股代码换成实时报价，并在发帖时留下价格记录",
+  "main": "library.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmcos/nodebb-plugin-stock"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "stock",
+    "klang"
+  ],
+  "author": "asmcos",
+  "license": "MIT",
+  "nbbpm": {
+    "compatibility": "^4.0.0"
+  }
+}

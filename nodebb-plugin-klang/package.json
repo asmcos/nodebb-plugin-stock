@@ -1,0 +1,16 @@
+{
+  "name": "nodebb-plugin-klang",
+  "version": "1.0.0",
+  "description": "Klang（金浪）论坛外壳：顶栏、首页和配色。不改 NodeBB 源码。",
+  "main": "library.js",
+  "license": "MIT",
+  "scripts": {
+    "css": "tailwindcss -c tailwind.config.js -i src/input.css -o public/css/site.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "nbbpm": {
+    "compatibility": "^4.0.0"
+  }
+}

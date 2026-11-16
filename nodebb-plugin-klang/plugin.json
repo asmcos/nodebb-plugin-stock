@@ -1,0 +1,22 @@
+{
+  "id": "nodebb-plugin-klang",
+  "url": "https://klang.org.cn",
+  "library": "./library.js",
+  "hooks": [
+    { "hook": "static:app.load", "method": "init" },
+    { "hook": "filter:scripts.get", "method": "addScript" },
+    { "hook": "filter:middleware.render", "method": "addBodyClass" },
+    { "hook": "filter:homepage.get", "method": "defineHomepage" },
+    { "hook": "action:homepage.get:klang", "method": "renderHomepage" }
+  ],
+  "css": [
+    "public/css/site.css"
+  ],
+  "scripts": [
+    "public/js/site.js"
+  ],
+  "modules": {
+    "../client/klang-home.js": "public/js/klang-home.js"
+  },
+  "templates": "templates"
+}

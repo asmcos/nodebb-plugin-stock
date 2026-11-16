@@ -1,0 +1,17 @@
+{
+  "id": "nodebb-plugin-stock",
+  "name": "Stock Quotes",
+  "url": "https://github.com/asmcos/nodebb-plugin-stock",
+  "library": "./library.js",
+  "hooks": [
+    { "hook": "filter:sanitize.config", "method": "sanitizeConfig" },
+    { "hook": "filter:post.create", "method": "onCreate" },
+    { "hook": "filter:post.edit", "method": "onEdit" },
+    { "hook": "filter:post.getPosts", "method": "onGetPosts" },
+    { "hook": "filter:teasers.get", "method": "onTeasers" },
+    { "hook": "filter:parse.raw", "method": "onRaw", "priority": 6 }
+  ],
+  "css": [
+    "public/stock.css"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "nodebb-plugin-klang-captcha",
+  "version": "1.0.0",
+  "description": "注册时填写图中的四位数字",
+  "main": "library.js",
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "captcha",
+    "klang"
+  ],
+  "license": "MIT",
+  "nbbpm": {
+    "compatibility": "^4.0.0"
+  }
+}

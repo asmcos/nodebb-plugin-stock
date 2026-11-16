@@ -1,0 +1,11 @@
+{
+  "id": "nodebb-plugin-klang-captcha",
+  "name": "Klang 注册验证码",
+  "url": "https://klang.org.cn",
+  "library": "./library.js",
+  "hooks": [
+    { "hook": "static:app.load", "method": "init" },
+    { "hook": "filter:scripts.get", "method": "addScript" },
+    { "hook": "filter:register.check", "method": "checkRegister" }
+  ]
+}
