@@ -430,6 +430,14 @@ body.klang-body [component="account/cover"] {
 	box-shadow: 0 0 0 2px var(--bg);
 }
 .voices .face:first-child { margin-left: 0; }
+.voices-inline { padding-top: 0; }
+.voices-inline .face {
+	width: 18px;
+	height: 18px;
+	margin-left: -6px;
+	font-size: 9px;
+	box-shadow: 0 0 0 1.5px var(--bg);
+}
 .face.is-online { overflow: visible; }
 .face.is-online::after {
 	content: "";

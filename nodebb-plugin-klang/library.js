@@ -305,7 +305,7 @@ async function shapeMany(list, hues, uid) {
 		const voices = (posterUids[index] || [])
 			.map(id => byId[String(id)])
 			.filter(Boolean)
-			.slice(0, 3)
+			.slice(0, 5)
 			.map(person => faceOf(person, hues))
 			.filter(Boolean);
 		return shapeTopic(topic, voices, hues);
@@ -317,6 +317,7 @@ function shapeTopic(topic, voices, hues) {
 		name: '访客', initial: '?', userslug: '', picture: '', hue: 0,
 	};
 	const people = voices.length ? voices : [author];
+	const shown = people.slice(0, 3);
 	const teaserUser = (topic.teaser && topic.teaser.user) || {};
 	const teaserName = teaserUser.displayname || teaserUser.fullname || teaserUser.username || '';
 	let teaserText = plain(topic.teaser && (topic.teaser.content || topic.teaser.sourceContent));
@@ -340,8 +341,10 @@ function shapeTopic(topic, voices, hues) {
 		when: when(topic.lastposttime || topic.timestamp),
 		pinned: !!topic.pinned,
 		user: author,
-		voices: people,
-		voiceNames: people.map(person => person.name).join('、'),
+		voices: shown,
+		voiceNames: shown.map(person => person.name).join('、'),
+		replyFaces: people.length > 1 ? people.slice(0, 5) : [],
+		replyNames: people.slice(0, 5).map(person => person.name).join('、'),
 		teaser: teaserText ? {
 			text: teaserText,
 			name: teaserName,

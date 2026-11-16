@@ -94,6 +94,27 @@
 						{{{ end }}}
 						<span aria-hidden="true">·</span>
 						<span title="{./timestampISO}">{./when}</span>
+						{{{ if ./replyFaces.length }}}
+						<span class="voices voices-inline" title="{./replyNames}">
+							{{{ each ./replyFaces }}}
+							{{{ if ./userslug }}}
+							<a class="face face-{./hue}" href="{relative_path}/user/{./userslug}" title="{./name}">
+							{{{ else }}}
+							<span class="face face-{./hue}" title="{./name}">
+							{{{ end }}}
+								{{{ if ./picture }}}
+								<img src="{./picture}" alt="">
+								{{{ else }}}
+								{./initial}
+								{{{ end }}}
+							{{{ if ./userslug }}}
+							</a>
+							{{{ else }}}
+							</span>
+							{{{ end }}}
+							{{{ end }}}
+						</span>
+						{{{ end }}}
 					</div>
 					{{{ if ./teaser.text }}}
 					<p class="tw-mb-0 tw-mt-1 tw-line-clamp-1 tw-text-[13px] tw-leading-5 tw-text-muted">{{{ if ./teaser.other }}}<span class="tw-text-ink">{./teaser.name}：</span>{{{ end }}}{./teaser.text}</p>
