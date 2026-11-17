@@ -12,7 +12,11 @@ const BLOCK = /<(pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi;
 const cache = new Map();
 
 function canon(code) {
-	return String(code || '').replace('.', '').toLowerCase();
+	return String(code || '').replace(/[\u200B\u200C\u200D\uFEFF\u2060]/g, '').replace('.', '').toLowerCase();
+}
+
+function normalize(html) {
+	return String(html || '').replace(/[\u200B\u200C\u200D\uFEFF\u2060]/g, '');
 }
 
 function esc(value) {
@@ -177,7 +181,8 @@ function chip(code, quote, snapshot) {
 }
 
 async function decorate(html) {
-	if (!html || typeof html !== 'string' || !/(?:sh|sz|bj)\.?\d{6}/i.test(html)) {
+	html = normalize(html);
+	if (!html || !/(?:sh|sz|bj)\.?\d{6}/i.test(html)) {
 		return html;
 	}
 	const shielded = protect(unwrapLegacy(html));
@@ -199,7 +204,8 @@ async function decorate(html) {
 }
 
 async function stamp(html) {
-	if (!html || typeof html !== 'string' || !/(?:sh|sz|bj)\.?\d{6}/i.test(html)) {
+	html = normalize(html);
+	if (!html || !/(?:sh|sz|bj)\.?\d{6}/i.test(html)) {
 		return html;
 	}
 	const shielded = protect(html);
@@ -312,6 +318,11 @@ if (require.main === module) {
 		const plain = await decorate('<p>通富微电 sz002156</p>');
 		if (!plain.includes('通富微电') || !plain.includes('klang-stock')) {
 			console.error('plain failed', plain);
+			process.exit(1);
+		}
+		const broken = await decorate('<p>宁德时代 sz\u200b300750</p>');
+		if (!broken.includes('klang-stock') || !broken.includes('sz300750') || broken.includes('\u200b')) {
+			console.error('zwsp failed', broken);
 			process.exit(1);
 		}
 		console.log('stock plugin ok');

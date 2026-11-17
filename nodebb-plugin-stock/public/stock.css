@@ -2,25 +2,23 @@
 	--ks-up: var(--up, #E10600);
 	--ks-down: var(--down, #0B8F4D);
 	--ks-flat: var(--ink3, #8A8A8A);
-	display: inline-flex;
-	align-items: baseline;
-	gap: 6px;
-	max-width: 100%;
-	margin: 0 2px;
-	padding: 1px 8px 2px;
-	border: 1px solid var(--line, #ececef);
-	border-radius: 999px;
-	background: var(--soft, #f4f4f5);
+	display: inline;
+	margin: 0 0.15em;
+	padding: 0;
+	border: 0;
+	background: none;
 	color: inherit !important;
 	text-decoration: none !important;
 	font-variant-numeric: tabular-nums;
-	line-height: 1.5;
+	line-height: inherit;
+	white-space: nowrap;
 	vertical-align: baseline;
 }
-.klang-stock.up { background: #FFF6F6; border-color: #F3C9C9; }
-.klang-stock.down { background: #F3FBF6; border-color: #C5E6D2; }
-.klang-stock:hover {
-	border-color: var(--accent, #C8102E);
+.klang-stock.up,
+.klang-stock.down { background: none; }
+.klang-stock:hover .ks-code {
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 .klang-stock .ks-name {
 	font-weight: 600;
@@ -30,9 +28,11 @@
 	font-size: 12px;
 	color: var(--ink3, #7A7366);
 }
+.klang-stock .ks-px { margin-left: 0.4em; }
+.klang-stock .ks-chg { margin-left: 0.28em; }
 .klang-stock .ks-px,
 .klang-stock .ks-chg {
-	font-weight: 650;
+	font-weight: 600;
 }
 .klang-stock.up .ks-px,
 .klang-stock.up .ks-chg { color: var(--ks-up); }
@@ -41,7 +41,8 @@
 .klang-stock.flat .ks-px,
 .klang-stock.flat .ks-chg { color: var(--ks-flat); }
 .klang-stock .ks-snap {
-	font-size: 11px;
+	margin-left: 0.35em;
+	font-size: 0.85em;
 	color: var(--ink3, #7A7366);
 }
 :root.dark .klang-stock,
@@ -49,9 +50,5 @@
 	--ks-up: #FF4D4F;
 	--ks-down: #2EBD6B;
 	--ks-flat: #8E8E8E;
-	background: #171717;
+	background: none;
 }
-:root.dark .klang-stock.up,
-[data-bs-theme="dark"] .klang-stock.up { background: #2A1414; border-color: #5C2424; }
-:root.dark .klang-stock.down,
-[data-bs-theme="dark"] .klang-stock.down { background: #122218; border-color: #1E4A32; }
